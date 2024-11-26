@@ -10,6 +10,14 @@ monthly_challenges = {
     "april": "Learn Django"
 }
 
+def index(request):
+    list_items=""
+    months = list(monthly_challenges.keys()) 
+    for month in months:
+        redirect_path = reverse("month-challenge", args=[month])
+        list_items += f"<li><a href=\"{redirect_path}\">{month}</a></li>"
+    return HttpResponse(list_items)
+
 def monthly_challenge_by_number(request, month):
     months = list(monthly_challenges.keys())
 
@@ -23,6 +31,7 @@ def monthly_challenge_by_number(request, month):
 def monthly_challenge(request, month):
     try:
         challenge_text = monthly_challenges[month]
+        response_data=f"<h1>{challenge_text}</h1>"
     except:
         return HttpResponseNotFound("Wrong Month")
-    return HttpResponse(challenge_text)
+    return HttpResponse(response_data)
